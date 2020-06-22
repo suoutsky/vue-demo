@@ -1,0 +1,34 @@
+<!-- provide 和 inject 启用类似于 2.x provide / inject 选项的依赖项注入。
+
+两者都只能在 setup() 当前活动实例期间调用。 -->
+import { provide, inject } from 'vue'
+
+const ThemeSymbol = Symbol()
+
+const Ancestor = {
+  setup() {
+    provide(ThemeSymbol, 'dark')
+  }
+}
+
+const Descendent = {
+  setup() {
+    const theme = inject(ThemeSymbol, 'light' /* optional default value */)
+    return {
+      theme
+    }
+  }
+}
+<!-- inject 接受可选的默认值作为第二个参数。
+
+如果未提供默认值，并且在 Provide 上下文中找不到该属性，则 inject 返回 undefined。 -->
+<!-- 
+provide 和 inject 启用类似于 2.x provide / inject 选项的依赖项注入。
+
+两者都只能在 setup() 当前活动实例期间调用。 -->
+<!-- 
+除了 2.x 生命周期等效项之外，Composition API 还提供了以下调试挂钩：
+
+onRenderTracked
+onRenderTriggered
+这两个钩子都收到一个 DebuggerEvent，类似于观察者的 onTrack 和 onTrigger 选项： -->

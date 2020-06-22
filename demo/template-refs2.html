@@ -1,0 +1,51 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hello Vue3.0</title>
+    <style>
+        body,
+        #app {
+            text-align: center;
+            padding: 30px;
+        }
+    </style>
+    <script src="../../packages/vue/dist/vue.global.js"></script>
+</head>
+<body>
+    <h3>Template Refs</h3>
+    <div id='app'></div>
+</body>
+<script>
+    const { createApp, reactive, ref, isRef, toRefs, onMounted, onBeforeUpdate } = Vue
+    const App = {
+        template: `
+            <div v-for="(item, i) in list" :ref="el => { divs[i] = el }">
+                {{ item }}
+            </div>
+        `,
+        setup() {
+            const list = reactive([1, 2, 3])
+            const divs = ref([])
+
+            // make sure to reset the refs before each update
+            onBeforeUpdate(() => {
+                divs.value = []
+            })
+
+            onMounted(() => {
+                // the DOM element will be assigned to the ref after initial render
+                console.log(divs.value) // [<div/>]
+            })
+
+            return {
+                list,
+                divs
+            }
+        }
+    }
+    
+    createApp(App).mount('#app')
+</script>
+</html>

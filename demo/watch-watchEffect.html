@@ -1,0 +1,67 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hello Vue3.0</title>
+    <style>
+        body,
+        #app {
+            text-align: center;
+            padding: 30px;
+        }
+    </style>
+    <script src="../../packages/vue/dist/vue.global.js"></script>
+</head>
+<body>
+    <h3>watch && watchEffect</h3>
+    <div id='app'></div>
+</body>
+<script>
+    const { createApp, reactive, ref, watch, watchEffect } = Vue
+    const App = {
+        template: `
+            <div class="container">
+                <button style="margin-left: 10px" @click="handleClick()">按钮</button>
+                <button style="margin-left: 10px" @click="handleStop">停止 watch</button>
+                <button style="margin-left: 10px" @click="handleStopWatchEffect">停止 watchEffect</button>
+                <div style="margin-top: 20px">{{ refData }}</div>
+            </div>`
+        ,
+        setup() {
+            let refData = ref(0);
+
+            const handleClick = () =>{
+                refData.value += 1
+            }
+
+            const stop = watch(refData, (val, oldVal) => {
+                console.log('watch ', refData.value)
+            })
+
+            const stopWatchEffect = watchEffect(() => {
+                console.log('watchEffect ', refData.value)
+            })
+
+            const handleStop = () =>{
+                stop()
+            }
+
+            const handleStopWatchEffect = () =>{
+                stopWatchEffect()
+            }
+
+            return {
+                refData, 
+                handleClick,
+                handleStop,
+                handleStopWatchEffect
+            }
+        }
+    }
+    createApp(App).mount('#app')
+</script>
+</html>
+
+<!-- watch : 创建 watch 监听
+watchEffect : 如果响应性的属性有变更，就会触发这个函数 -->

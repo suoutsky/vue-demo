@@ -1,0 +1,49 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hello Vue3.0</title>
+    <style>
+        body,
+        #app {
+            text-align: center;
+            padding: 30px;
+        }
+    </style>
+    <script src="../../packages/vue/dist/vue.global.js"></script>
+</head>
+<body>
+    <h3>computed</h3>
+    <div id='app'></div>
+</body>
+<script>
+    const { createApp, reactive, ref, computed } = Vue
+    const App = {
+        template: `
+            <button @click='handleClick'>count++</button> 
+            <div style="margin-top: 20px">{{ count }}</div>
+        `,
+        setup() {
+            const refData = ref(0);
+
+            const count = computed(()=>{
+                return refData.value; 
+            })
+
+            const handleClick = () =>{
+                refData.value += 1 // 要修改 count 的依赖项 refData
+            }
+
+            console.log("refData:" , refData)
+
+            return {
+                count,
+                handleClick
+            }
+        }
+    }
+    createApp(App).mount('#app')
+</script>
+</html>
+<!-- computed : 创建计算属性 -->

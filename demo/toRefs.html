@@ -1,0 +1,67 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hello Vue3.0</title>
+    <style>
+        body,
+        #app {
+            text-align: center;
+            padding: 30px;
+        }
+    </style>
+    <script src="../../packages/vue/dist/vue.global.js"></script>
+</head>
+<body>
+    <h3>toRefs</h3>
+    <div id='app'></div>
+</body>
+<script>
+    const { createApp, reactive, ref, isRef, toRefs } = Vue
+    const App = {
+        // template: `
+        //     <button @click='click'>reverse</button> 
+        //     <div style="margin-top: 20px">{{ state.message }}</div>
+        // `,
+        // setup() {
+        //     const state = reactive({
+        //         message: 'Hello Vue3.0!!'
+        //     })
+
+        //     click = () => {
+        //         state.message = state.message.split('').reverse().join('')
+        //         console.log('state.message: ', state.message)
+        //     }
+
+        //     return {
+        //         state,
+        //         click
+        //     }
+        // }
+
+        template: `
+            <button @click='click'>count++</button> 
+            <div style="margin-top: 20px">{{ message }}</div>
+        `,
+        setup() {
+            const state = reactive({
+                message: 'Hello Vue3.0!!'
+            })
+
+            click = () => {
+                state.message = state.message.split('').reverse().join('')
+                console.log('state.message: ', state.message)
+            }
+
+            return {
+                click,
+                ...toRefs(state)
+            }
+        }
+    }
+    createApp(App).mount('#app')
+</script>
+</html>
+<!-- toRefs : 将响应式数据对象转换为单一响应式对象 -->
+<!-- 将一个 reactive 代理对象打平，转换为 ref 代理对象，使得对象的属性可以直接在 template 上使用。 -->

@@ -1,0 +1,58 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hello Vue3.0</title>
+    <style>
+        body,
+        #app {
+            text-align: center;
+            padding: 30px;
+        }
+    </style>
+    <script src="../../packages/vue/dist/vue.global.js"></script>
+</head>
+<body>
+    <h3>Lifecycle Hooks</h3>
+    <div id='app'></div>
+</body>
+<script>
+    const { createApp, reactive, onMounted, onUpdated, onUnmounted } = Vue
+    const App = {
+        template: `
+            <div class="container">
+                <button @click='click'>reverse</button>
+                <div style="margin-top: 20px">{{ state.message }}</div>
+            </div>`
+        ,
+        setup() {
+            console.log('setup!')
+
+            const state = reactive({
+                message: 'Hello Vue3!!'
+            })
+
+            click = () => {
+                state.message = state.message.split('').reverse().join('')
+            }
+
+            onMounted(() => {
+                console.log('mounted!')
+            })
+            onUpdated(() => {
+                console.log('updated!')
+            })
+            onUnmounted(() => {
+                console.log('unmounted!')
+            })
+
+            return {
+                state,
+                click
+            }
+        }
+    }
+    createApp(App).mount('#app')
+</script>
+</html>

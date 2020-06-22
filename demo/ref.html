@@ -1,0 +1,51 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hello Vue3.0</title>
+    <style>
+        body,
+        #app {
+            text-align: center;
+            padding: 30px;
+        }
+    </style>
+    <script src="../../packages/vue/dist/vue.global.js"></script>
+</head>
+<body>
+    <h3>ref & isRef</h3>
+    <div id='app'></div>
+</body>
+<script>
+    const { createApp, reactive, ref, isRef } = Vue
+    const App = {
+        template: `
+            <button @click='click'>count++</button> 
+            <div style="margin-top: 20px">{{ count }}</div>
+        `,
+        setup() {
+            const count = ref(0);
+            console.log("count.value：", count.value)  // 0
+
+            count.value++
+            console.log("count.value：", count.value)  // 1
+
+            // 判断某值是否是响应式类型
+            console.log('count is ref:', isRef(count))
+
+            click = () => {
+                count.value++;
+                console.log("click count.value：", count.value) 
+            }
+
+            return {
+                count,
+                click,
+            }
+        }
+    }
+    createApp(App).mount('#app')
+</script>
+</html>
+<!-- ref : 创建一个响应式的数据对象 isRef : 检查值是否是 ref 的引用对象。 -->

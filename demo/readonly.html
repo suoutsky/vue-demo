@@ -1,0 +1,66 @@
+<!-- 使用 readonly 函数，可以把 普通 object 对象、reactive 对象、ref 对象 返回一个只读对象。
+
+返回的 readonly 对象，一旦修改就会在 console 有 warning 警告。
+
+程序还是会照常运行，不会报错。 -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hello Vue3.0</title>
+    <style>
+        body,
+        #app {
+            text-align: center;
+            padding: 30px;
+        }
+    </style>
+    <script src="../../packages/vue/dist/vue.global.js"></script>
+</head>
+<body>
+    <h3>readonly</h3>
+    <div id='app'></div>
+</body>
+<script>
+    const { createApp, reactive, readonly, watchEffect } = Vue
+    const App = {
+        template: `
+            <button @click='click'>reverse</button> 
+            <button @click='clickReadonly' style="margin-left: 20px">readonly++</button> 
+            <div style="margin-top: 20px">{{ original.count }}</div>
+        `,
+        setup() {
+            const original = reactive({ count: 0 })
+
+            const copy = readonly(original)
+
+            watchEffect(() => {
+                // works for reactivity tracking
+                console.log(copy.count)
+            })
+
+            click = () => {
+                // mutating original will trigger watchers relying on the copy
+                original.count++
+            }
+
+            clickReadonly = () => {
+                // mutating the copy will fail and result in a warning
+                copy.count++ // warning!
+            }
+
+            return {
+                original,
+                click,
+                clickReadonly
+            }
+        }
+    }
+    createApp(App).mount('#app')
+</script>
+</html>
+<!-- 
+使用 readonly 函数，可以把 普通 object 对象、reactive 对象、ref 对象 返回一个只读对象。
+返回的 readonly 对象，一旦修改就会在 console 有 warning 警告。
+程序还是会照常运行，不会报错。 -->

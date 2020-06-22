@@ -1,0 +1,52 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hello Vue3.0</title>
+    <style>
+        body,
+        #app {
+            text-align: center;
+            padding: 30px;
+        }
+    </style>
+    <script src="../../packages/vue/dist/vue.global.js"></script>
+</head>
+<body>
+    <h3>Template Refs</h3>
+    <div id='app'></div>
+</body>
+<script>
+    const { createApp, reactive, ref, isRef, toRefs, onMounted, onBeforeUpdate } = Vue
+    const App = {
+        template: `
+            <button @click='click'>count++</button> 
+            <div ref="count" style="margin-top: 20px">{{ count }}</div>
+        `,
+        setup() {
+            const count = ref(null);
+
+            onMounted(() => {
+                // the DOM element will be assigned to the ref after initial render
+                console.log(count.value) // <div/>
+            })
+
+            click = () => {
+                count.value++;
+                console.log("click count.value：", count.value) 
+            }
+
+            return {
+                count,
+                click
+            }
+        }
+    }
+    
+    createApp(App).mount('#app')
+</script>
+</html>
+<!-- 使用 Composition API 时，反应性引用和模板引用的概念是统一的。
+
+为了获得对模板中元素或组件实例的引用，我们可以像往常一样声明 ref 并从 setup() 返回。 -->

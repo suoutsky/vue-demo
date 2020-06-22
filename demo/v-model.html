@@ -1,0 +1,50 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hello Vue3.0</title>
+    <style>
+        body,
+        #app {
+            text-align: center;
+            padding: 30px;
+        }
+    </style>
+    <script src="../../packages/vue/dist/vue.global.js"></script>
+</head>
+<body>
+    <h3>v-model</h3>
+    <div id='app'></div>
+</body>
+<script>
+    const { createApp, reactive, watchEffect } = Vue
+    const App = {
+        template: `<button @click='click'>reverse</button> 
+                    <div></div>
+                    <input v-model="state.message" style="margin-top: 20px" />
+                    <div style="margin-top: 20px">{{ state.message }}</div>`,
+        setup() {
+            const state = reactive({
+                message:'Hello Vue 3!!'
+            })
+
+            watchEffect(() => {
+                console.log('state change ', state.message)
+            })
+
+            click = () => {
+                state.message = state.message.split('').reverse().join('')
+            }
+
+            return {
+                state,
+                click
+            }
+        }
+    }
+    createApp(App).mount('#app')
+</script>
+</html>
+
+<!-- v-model：就是双向绑定 -->
